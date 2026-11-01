@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/models/post.dart';
@@ -112,9 +112,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
       });
 
       _message(
-        _favorite
-            ? 'أُضيف إلى المفضلة'
-            : 'أُزيل من المفضلة',
+        _favorite ? 'أُضيف إلى المفضلة' : 'أُزيل من المفضلة',
       );
     } catch (e) {
       _message(e.toString());
@@ -147,9 +145,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
       });
 
       _message(
-        _saved
-            ? 'حُفظ للقراءة دون اتصال'
-            : 'أُزيل من مكتبة القراءة',
+        _saved ? 'حُفظ للقراءة دون اتصال' : 'أُزيل من مكتبة القراءة',
       );
     } catch (e) {
       _message(e.toString());
@@ -166,12 +162,14 @@ class _ArticleScreenState extends State<ArticleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
-            backgroundColor: SeenColors.paper,
+            backgroundColor: const Color.fromARGB(255, 140, 137, 128),
             title: const Text('سين'),
             actions: [
               IconButton(
@@ -202,7 +200,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   const SizedBox(height: 12),
                   Text(
                     _post.title,
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -216,7 +214,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                       Expanded(
                         child: Text(
                           _post.authorName,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: textTheme.bodySmall,
                         ),
                       ),
                       if (_post.createdAt != null)
@@ -224,7 +222,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                           '${_post.createdAt!.year}/'
                           '${_post.createdAt!.month}/'
                           '${_post.createdAt!.day}',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: textTheme.bodySmall,
                         ),
                     ],
                   ),
@@ -265,36 +263,38 @@ class _ArticleScreenState extends State<ArticleScreen> {
                       ),
                       child: Text(
                         _post.excerpt,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: textTheme.titleMedium,
                       ),
                     ),
                   const SizedBox(height: 18),
                   if (_post.content.trim().isEmpty)
                     const Text('لا يتوفر نص المقال.')
                   else
-                    Html(
-                      data: _post.content,
-                      style: {
-                        'body': Style(
-                          margin: Margins.zero,
-                          padding: HtmlPaddings.zero,
-                          fontSize: FontSize(17),
-                          lineHeight: const LineHeight(1.85),
-                        ),
-                        'p': Style(
-                          margin: Margins.only(bottom: 16),
-                        ),
-                        'h2': Style(
-                          fontSize: FontSize(23),
-                          fontWeight: FontWeight.bold,
-                          margin: Margins.only(
-                            top: 24,
-                            bottom: 10,
-                          ),
-                        ),
-                        'img': Style(
-                          margin: Margins.symmetric(vertical: 12),
-                        ),
+                    HtmlWidget(
+                      _post.content,
+                      textStyle: const TextStyle(
+                        fontSize: 17,
+                        height: 1.85,
+                      ),
+                      customStylesBuilder: (element) {
+                        switch (element.localName) {
+                          case 'p':
+                            return {
+                              'margin': '0 0 16px 0',
+                            };
+                          case 'h2':
+                            return {
+                              'font-size': '23px',
+                              'font-weight': 'bold',
+                              'margin': '24px 0 10px 0',
+                            };
+                          case 'img':
+                            return {
+                              'margin': '12px 0',
+                            };
+                          default:
+                            return null;
+                        }
                       },
                     ),
                   const SizedBox(height: 24),

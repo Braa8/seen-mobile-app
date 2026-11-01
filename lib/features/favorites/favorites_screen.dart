@@ -22,23 +22,44 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  late Future<List<SeenPost>> _future;
+  Future<List<SeenPost>>? _future;
+
+  bool get _isSignedIn => SessionService.instance.isSignedIn;
 
   @override
   void initState() {
     super.initState();
-    _future = _load();
+
+    if (_isSignedIn) {
+      _future = _load();
+    }
   }
 
   Future<List<SeenPost>> _load() {
     return widget.repository.fetchFavorites();
   }
 
+  void _refresh() {
+    if (!_isSignedIn) return;
+
+    setState(() {
+      _future = _load();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!SessionService.instance.isSignedIn) {
-      return const _SignInPrompt();
+    if (!_isSignedIn) {
+      return _SignInPrompt(
+        onSignedIn: () {
+          setState(() {
+            _future = _load();
+          });
+        },
+      );
     }
+
+    _future ??= _load();
 
     return SafeArea(
       child: Column(
@@ -54,11 +75,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _future = _load();
-                    });
-                  },
+                  onPressed: _refresh,
                   icon: const Icon(Icons.refresh),
                 ),
               ],
@@ -68,19 +85,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             child: FutureBuilder<List<SeenPost>>(
               future: _future,
               builder: (context, snapshot) {
-                if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const LoadingState();
                 }
 
                 if (snapshot.hasError) {
                   return ErrorState(
                     message: snapshot.error.toString(),
-                    onRetry: () {
-                      setState(() {
-                        _future = _load();
-                      });
-                    },
+                    onRetry: _refresh,
                   );
                 }
 
@@ -97,9 +109,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return ListView.separated(
                   padding: const EdgeInsets.all(20),
                   itemCount: posts.length,
-                  separatorBuilder: (_, _) {
-                    return const SizedBox(height: 10);
-                  },
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final post = posts[index];
 
@@ -129,9 +139,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           );
 
                           if (mounted) {
-                            setState(() {
-                              _future = _load();
-                            });
+                            _refresh();
                           }
                         },
                       ),
@@ -148,7 +156,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 }
 
 class _SignInPrompt extends StatelessWidget {
-  const _SignInPrompt();
+  const _SignInPrompt({
+    required this.onSignedIn,
+  });
+
+  final VoidCallback onSignedIn;
 
   @override
   Widget build(BuildContext context) {
@@ -175,13 +187,17 @@ class _SignInPrompt extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             FilledButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const LoginScreen(),
                   ),
                 );
+
+                if (context.mounted) {
+                  onSignedIn();
+                }
               },
               child: const Text('تسجيل الدخول'),
             ),
