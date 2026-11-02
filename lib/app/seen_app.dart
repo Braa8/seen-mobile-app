@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
-import '../core/theme/seen_theme.dart';
-import '../features/shell/main_shell.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import '../core/theme/seen_theme.dart';
+import '../features/splash/seen_splash_screen.dart';
 
 class SeenApp extends StatelessWidget {
   const SeenApp({super.key});
@@ -15,20 +17,20 @@ class SeenApp extends StatelessWidget {
       darkTheme: SeenTheme.dark,
       themeMode: ThemeMode.system,
       locale: const Locale('ar'),
-
-      supportedLocales: const [Locale('ar'), Locale('en')],
-
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+      ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      
       builder: (context, child) => Directionality(
         textDirection: TextDirection.rtl,
         child: child ?? const SizedBox.shrink(),
       ),
-      home: const MainShell(),
+      home: const SeenSplashScreen(),
     );
   }
 }

@@ -1,11 +1,11 @@
+
 name: seen_app
 description: Seen Arabic editorial newspaper app.
 publish_to: "none"
 version: 1.0.0+1
+
 environment:
   sdk: ">=3.12.2 <4.0.0"
-
-
 
 dependencies:
   flutter:
@@ -16,21 +16,43 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   http: ^1.5.0
+
+  # Firebase
   firebase_core: ^4.2.0
   firebase_auth: ^6.1.0
   firebase_messaging: ^16.0.0
+
+  # Notifications
   flutter_local_notifications: ^19.4.0
+
+  # Local storage and offline support
   shared_preferences: ^2.5.3
   path_provider: ^2.1.5
+
+  # Article content
   flutter_widget_from_html: ^0.17.4
   cached_network_image: ^3.4.1
+
+  # Sharing and external links
   share_plus: ^12.0.0
   url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#244C70"
+  adaptive_icon_foreground: "assets/images/logo.png"
