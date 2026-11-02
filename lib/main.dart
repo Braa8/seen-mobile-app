@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
+import 'core/services/notification_service.dart';
 import 'app/seen_app.dart';
 import 'core/services/session_service.dart';
 import 'firebase_options.dart';
@@ -41,6 +41,10 @@ Future<void> main() async {
   await SessionService.instance.initialize(
     firebaseAvailable: firebaseReady,
   );
+
+  if (firebaseReady) {
+  await NotificationService.instance.initialize();
+}
 
   runApp(const SeenApp());
 }
