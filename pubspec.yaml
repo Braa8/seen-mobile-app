@@ -29,8 +29,11 @@ dependencies:
   shared_preferences: ^2.5.3
   path_provider: ^2.1.5
 
-  # Article content
-  flutter_widget_from_html: ^0.17.4
+  # Article content - text, images, links and SVG only
+  flutter_widget_from_html_core: ^0.17.4
+  fwfh_cached_network_image: ^0.16.3
+  fwfh_url_launcher: ^0.16.1
+  fwfh_svg: ^0.16.1
   cached_network_image: ^3.4.1
 
   # Sharing and external links

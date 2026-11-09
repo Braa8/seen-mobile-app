@@ -1,6 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:fwfh_cached_network_image/fwfh_cached_network_image.dart';
+import 'package:fwfh_svg/fwfh_svg.dart';
+import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/models/post.dart';
@@ -272,6 +276,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                   else
                     HtmlWidget(
                       _post.content,
+                      factoryBuilder: () => _SeenArticleWidgetFactory(),
                       textStyle: const TextStyle(
                         fontSize: 17,
                         height: 1.85,
@@ -349,6 +354,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
     );
   }
 }
+
+class _SeenArticleWidgetFactory extends WidgetFactory
+    with
+        CachedNetworkImageFactory,
+        SvgFactory,
+        UrlLauncherFactory {}
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
