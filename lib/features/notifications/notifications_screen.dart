@@ -129,7 +129,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
           if (snapshot.hasError) {
             return ErrorState(
-              message: snapshot.error.toString(),
+              message: "تحقق من الشبكة",
               onRetry: _refresh,
             );
           }

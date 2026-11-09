@@ -91,7 +91,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
                 if (snapshot.hasError) {
                   return ErrorState(
-                    message: snapshot.error.toString(),
+                    message: "تحقق من الشبكة",
                     onRetry: _refresh,
                   );
                 }
@@ -101,7 +101,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 if (posts.isEmpty) {
                   return const EmptyState(
                     title: 'مساحتك ما زالت فارغة',
-                    subtitle: 'احفظ المقالات التي تريد العودة إليها.',
+                    subtitle: 'احفظ المقالات التي تريد العودة إليها',
                     icon: Icons.bookmark_border,
                   );
                 }
@@ -182,7 +182,7 @@ class _SignInPrompt extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'سجّل الدخول لمزامنة مقالاتك بين الأجهزة.',
+              'سجّل الدخول لمزامنة مقالاتك ',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 18),

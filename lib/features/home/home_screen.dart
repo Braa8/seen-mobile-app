@@ -283,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       selected: selected,
                       onSelected: (_) => _changeCategory(value),
                       selectedColor: SeenColors.blue,
-                      backgroundColor: SeenColors.card,
+                      backgroundColor: const Color.fromARGB(255, 204, 201, 195),
                       labelStyle: TextStyle(
                         color: selected ? Colors.white : SeenColors.ink,
                         fontWeight: FontWeight.w600,

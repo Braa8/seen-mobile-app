@@ -27,7 +27,7 @@ class _SeenSplashScreenState extends State<SeenSplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2400),
+      duration: const Duration(milliseconds: 3000),
     );
 
     _logoScale = Tween<double>(
@@ -67,7 +67,7 @@ class _SeenSplashScreenState extends State<SeenSplashScreen>
 
     _controller.forward();
 
-    Future.delayed(const Duration(milliseconds: 2700), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       if (!mounted) return;
 
       Navigator.of(context).pushReplacement(
@@ -83,7 +83,7 @@ class _SeenSplashScreenState extends State<SeenSplashScreen>
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 1000),
         ),
       );
     });

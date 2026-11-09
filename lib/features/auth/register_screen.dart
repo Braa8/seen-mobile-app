@@ -36,7 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_form.currentState!.validate()) return;
 
     if (!SessionService.instance.firebaseAvailable) {
-      _message('لم يتم إعداد Firebase في نسخة Android بعد.');
+      _message('لم يتم إعداد في نسخة Android بعد.');
       return;
     }
 
